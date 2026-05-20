@@ -1,6 +1,6 @@
 # Vision Harnessing Agent for Open Ad-hoc Segmentation
 
-Code and data will be released.
+
 
 <!-- **University of Michigan** -->
 
@@ -10,18 +10,22 @@ Code and data will be released.
 [[Paper]()] | [[Project Page]()] | [[Citation](#citation)] -->
 
 
+Code and data will be released.
+
+https://arxiv.org/pdf/2605.19410
 
 <!-- ## Citation
 
 If you find our work inspiring or use our codebase in your research, please consider giving a star ⭐ and a citation.
 
 ```
-@InProceedings{wang2025oakCVPR,
-    author    = {Wang, Zilin and Mo, Sangwoo and Yu, Stella X. and Behpour, Sima and Ren, Liu},
-    title     = {Open Ad-hoc Categorization with Contextualized Feature Learning},
-    booktitle = {Proceedings of the Computer Vision and Pattern Recognition Conference (CVPR)},
-    month     = {June},
-    year      = {2025},
-    pages     = {15108-15117}
+@misc{wang2026visionharnessingagentopen,
+      title={Vision Harnessing Agent for Open Ad-hoc Segmentation}, 
+      author={Zilin Wang and Stella X. Yu},
+      year={2026},
+      eprint={2605.19410},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2605.19410}, 
 }
 ``` -->
