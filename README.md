@@ -4,7 +4,7 @@
 
 [Zilin Wang](https://wayne2wang.github.io/), [Stella X. Yu](https://web.eecs.umich.edu/~stellayu/)
 
-[[Paper](https://arxiv.org/abs/2605.19410)] | [[Setup](#setup)] | [[Quick Start](#quick-start)] | [[Gradio](#gradio)] | [[Citation](#citation)]
+[[Paper](https://arxiv.org/abs/2605.19410)] [[Setup](#setup)] [[Quick Start](#quick-start)] [[Gradio](#gradio)] [[Citation](#citation)]
 
 **TL;DR:** VASA is a training-free **vision harnessing agent for open ad-hoc segmentation**: segmenting concepts defined on the fly through parts, relations, exclusions, and collections. Its visual harness coordinates a VLM and SAM3 to construct the requested mask, making visual progress **persistent, inspectable, and editable**. Planning, segmentation, mask editing, scrutiny, and error recovery let reasoning and visual construction advance together.
 
