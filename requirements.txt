@@ -1,0 +1,23 @@
+# Dependencies for VASA image inference and the pinned SAM3 model builder.
+setuptools>=68,<81
+numpy>=1.26,<2
+Pillow>=10
+opencv-python-headless>=4.8,<4.12
+pycocotools>=2.0.7
+matplotlib>=3.8
+contourpy>=1.2,<1.4
+iopath>=0.1.10
+openai>=1.0
+python-dotenv>=1.0
+torch>=2.7
+torchvision>=0.22
+einops>=0.8
+
+# Imported by SAM3 model-builder modules but omitted from its base dependencies.
+scipy>=1.11
+psutil>=5.9
+# SAM3 imports Triton unconditionally; official Triton wheels target Linux.
+triton; sys_platform == "linux"
+
+# Local browser interface
+gradio>=6.28,<7
