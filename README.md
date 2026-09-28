@@ -8,7 +8,7 @@
 
 **TL;DR:** VASA is a training-free **vision harnessing agent for open ad-hoc segmentation**: segmenting concepts defined on the fly through parts, relations, exclusions, and collections. Its visual harness coordinates a VLM and SAM3 to construct the requested mask, making visual progress **persistent, inspectable, and editable**. Planning, segmentation, mask editing, scrutiny, and error recovery let reasoning and visual construction advance together.
 
-<p align="center"><img src="assets/teaser.png" width="100%" alt="VASA maintains and edits a working mask to construct the requested region, compared with SAM3 Agent's repeated segmentation attempts." /></p>
+<p align="left"><img src="assets/teaser.png" width="92%" alt="VASA maintains and edits a working mask to construct the requested region, compared with SAM3 Agent's repeated segmentation attempts." /></p>
 
 ## Setup
 
