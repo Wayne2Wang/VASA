@@ -1,4 +1,4 @@
-# Vision Harnessing Agent for Open Ad-hoc Segmentation
+# VASA: Vision Harnessing Agent for Open Ad-hoc Segmentation
 
 **University of Michigan**
 
