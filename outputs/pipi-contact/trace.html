@@ -217,7 +217,10 @@
 // fills it in and walks the beats. Every string reaches the DOM through
 // textContent, so trace text can never become markup.
 function mountVasa(host) {
-  const HOLD = {system: 0.7, send: 1.5, input: 0.9, decide: 1.6, toStrategy: 1,
+  // Beats the agent acts on hold long enough to read. The opening beats only
+  // set the scene, and dwelling on them made a fresh run look stuck before
+  // anything happened, so they pass quickly.
+  const HOLD = {system: 0.3, send: 0.85, input: 0.45, decide: 1.6, toStrategy: 1,
                 strategySet: 1.45, toSam3: 1, sam3: 1.25, return: 1.6, toMask: 1,
                 maskEdit: 1.25, maskBack: 1.6, warning: 1.5, note: 1};
   const BASE = 1300;
