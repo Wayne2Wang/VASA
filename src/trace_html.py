@@ -379,6 +379,9 @@ def render_trace(run_dir, width=900, quality=90):
             '<title>VASA · Run walkthrough</title><style>'
             'body{margin:0;background:#000;min-height:100dvh;display:flex;'
             'align-items:center;justify-content:center}'
+            # Without this the flex item is as wide as its content and
+            # cannot shrink, so narrow windows scroll sideways.
+            'main{width:100%;min-width:0}'
             + inline_css() + '</style></head><body><main>' + body + '</main><script>'
             + viewer_js() + '\nmountVasa(document.querySelector("main"));</script></body></html>')
     target = Path(run_dir)/'trace.html'

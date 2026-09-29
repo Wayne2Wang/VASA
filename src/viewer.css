@@ -170,9 +170,45 @@
   .vasa-report .agent-head{margin-bottom:8px}
   .vasa-report .title{font-size:14px}
 }
+/* Narrow windows: the agent keeps the top, its state and tool sit beneath it.
+   Every role stays on screen so the lighting still reads; only the wires go. */
 @media (max-width:1100px){
-  .vasa-report .grid{grid-template-columns:1fr;grid-template-rows:auto}
-  .vasa-report .agent,.vasa-report .strategy,.vasa-report .sam3,.vasa-report .mask{grid-column:1;grid-row:auto}
+  .vasa-report{padding:14px 14px 12px;gap:10px}
+  .vasa-report .grid{grid-template-columns:1fr 1fr;
+    grid-template-rows:minmax(0,1.5fr) auto minmax(0,1fr);gap:10px}
+  .vasa-report .agent{grid-column:1/span 2;grid-row:1;padding:12px}
+  .vasa-report .strategy{grid-column:1/span 2;grid-row:2;padding:10px 12px}
+  .vasa-report .sam3{grid-column:1;grid-row:3;padding:10px}
+  .vasa-report .mask{grid-column:2;grid-row:3;padding:10px}
   .vasa-report .wire{display:none}
-  .vasa-report .panel .well{min-height:220px}
+  .vasa-report .chat{padding:12px;gap:10px}
+  .vasa-report .box{width:100%}
+  .vasa-report .asked{max-width:94%}
+  /* Strategy collapses to its headline; the full text is in the agent's
+     own strategy message just above. */
+  .vasa-report .strategy .head{margin-bottom:6px}
+  .vasa-report .strategy .well{padding:8px 10px;overflow:hidden;-webkit-mask-image:none;mask-image:none}
+  .vasa-report .strategy-head{margin:0;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .vasa-report .strategy-body{display:none}
+  .vasa-report .panel h2{white-space:nowrap}
+  .vasa-report footer{flex-wrap:wrap;gap:8px 10px;padding-top:10px}
+  .vasa-report .status{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .vasa-report .ticks{flex-basis:100%;overflow-x:auto;scrollbar-width:none}
+  .vasa-report .ticks::-webkit-scrollbar{display:none}
+  .vasa-report .tick{flex:1 0 auto;min-width:52px}
+}
+@media (max-width:560px){
+  .vasa-report{font-size:14px}
+  .vasa-report .title{font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .vasa-report .agent-head{margin-bottom:8px}
+  .vasa-report .agent-head h2{font-size:13px}
+  .vasa-report .badge{font-size:10.5px;padding:2px 7px}
+  .vasa-report .box-head{padding:9px 12px 10px}
+  .vasa-report .box-decision{font-size:15.5px;overflow-wrap:anywhere}
+  .vasa-report .box-why{font-size:12.5px}
+  .vasa-report .asked-bubble{padding:9px;gap:9px}
+  .vasa-report .asked-bubble img{width:44px;height:44px}
+  .vasa-report .asked-bubble p{font-size:13px}
+  .vasa-report .panel h2{font-size:13px}
+  .vasa-report .panel .cap{font-size:11.5px;margin-top:6px}
 }
