@@ -1,0 +1,9 @@
+# Example run: only the shareable pages and the trace behind them.
+*
+!.gitignore
+!result.json
+!trace.html
+!trace_plain.html
+!trace/
+trace/*
+!trace/history.json

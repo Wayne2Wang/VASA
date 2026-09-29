@@ -1,0 +1,218 @@
+{
+  "created_at": "2026-09-28T17:13:41-04:00",
+  "model": "openai/gpt-6-luna",
+  "max_rounds": 20,
+  "max_tokens": 10000,
+  "image_downscale": 2,
+  "reasoning_effort": null,
+  "vlm_calls": 7,
+  "termination": "completed",
+  "usage": [
+    {
+      "completion_tokens": 991,
+      "prompt_tokens": 6941,
+      "total_tokens": 7932,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": 0,
+        "reasoning_tokens": 416,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null,
+        "image_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cache_write_tokens": 652,
+        "cached_tokens": 6286,
+        "image_tokens": null,
+        "text_tokens": null,
+        "video_tokens": 0
+      },
+      "cost": 0.00064016,
+      "is_byok": false,
+      "cost_details": {
+        "upstream_inference_cost": 0.00064016,
+        "upstream_inference_prompt_cost": 0.00014466,
+        "upstream_inference_completions_cost": 0.0004955
+      }
+    },
+    {
+      "completion_tokens": 875,
+      "prompt_tokens": 7223,
+      "total_tokens": 8098,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": 0,
+        "reasoning_tokens": 869,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null,
+        "image_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cache_write_tokens": 282,
+        "cached_tokens": 6938,
+        "image_tokens": null,
+        "text_tokens": null,
+        "video_tokens": 0
+      },
+      "cost": 0.00054243,
+      "is_byok": false,
+      "cost_details": {
+        "upstream_inference_cost": 0.00054243,
+        "upstream_inference_prompt_cost": 0.00010493,
+        "upstream_inference_completions_cost": 0.0004375
+      }
+    },
+    {
+      "completion_tokens": 339,
+      "prompt_tokens": 7223,
+      "total_tokens": 7562,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": 0,
+        "reasoning_tokens": 99,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null,
+        "image_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cache_write_tokens": 0,
+        "cached_tokens": 7220,
+        "image_tokens": null,
+        "text_tokens": null,
+        "video_tokens": 0
+      },
+      "cost": 0.000242,
+      "is_byok": false,
+      "cost_details": {
+        "upstream_inference_cost": 0.000242,
+        "upstream_inference_prompt_cost": 7.25e-05,
+        "upstream_inference_completions_cost": 0.0001695
+      }
+    },
+    {
+      "completion_tokens": 464,
+      "prompt_tokens": 7608,
+      "total_tokens": 8072,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": 0,
+        "reasoning_tokens": 376,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null,
+        "image_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cache_write_tokens": 667,
+        "cached_tokens": 6938,
+        "image_tokens": null,
+        "text_tokens": null,
+        "video_tokens": 0
+      },
+      "cost": 0.000385055,
+      "is_byok": false,
+      "cost_details": {
+        "upstream_inference_cost": 0.000385055,
+        "upstream_inference_prompt_cost": 0.000153055,
+        "upstream_inference_completions_cost": 0.000232
+      }
+    },
+    {
+      "completion_tokens": 621,
+      "prompt_tokens": 7619,
+      "total_tokens": 8240,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": 0,
+        "reasoning_tokens": 380,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null,
+        "image_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cache_write_tokens": 1330,
+        "cached_tokens": 6286,
+        "image_tokens": null,
+        "text_tokens": null,
+        "video_tokens": 0
+      },
+      "cost": 0.00053991,
+      "is_byok": false,
+      "cost_details": {
+        "upstream_inference_cost": 0.00053991,
+        "upstream_inference_prompt_cost": 0.00022941,
+        "upstream_inference_completions_cost": 0.0003105
+      }
+    },
+    {
+      "completion_tokens": 294,
+      "prompt_tokens": 7630,
+      "total_tokens": 7924,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": 0,
+        "reasoning_tokens": 82,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null,
+        "image_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cache_write_tokens": 1341,
+        "cached_tokens": 6286,
+        "image_tokens": null,
+        "text_tokens": null,
+        "video_tokens": 0
+      },
+      "cost": 0.000377785,
+      "is_byok": false,
+      "cost_details": {
+        "upstream_inference_cost": 0.000377785,
+        "upstream_inference_prompt_cost": 0.000230785,
+        "upstream_inference_completions_cost": 0.000147
+      }
+    },
+    {
+      "completion_tokens": 279,
+      "prompt_tokens": 7650,
+      "total_tokens": 7929,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": 0,
+        "reasoning_tokens": 116,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null,
+        "image_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cache_write_tokens": 1361,
+        "cached_tokens": 6286,
+        "image_tokens": null,
+        "text_tokens": null,
+        "video_tokens": 0
+      },
+      "cost": 0.000372785,
+      "is_byok": false,
+      "cost_details": {
+        "upstream_inference_cost": 0.000372785,
+        "upstream_inference_prompt_cost": 0.000233285,
+        "upstream_inference_completions_cost": 0.0001395
+      }
+    }
+  ],
+  "mask": "mask.png",
+  "overlay": "overlay.png",
+  "query": "What parts are about to make contact",
+  "image_name": "pipi.png",
+  "trace": {
+    "history": "trace/history.json",
+    "input": "input.png",
+    "path_base": "output_directory",
+    "format_version": 1
+  }
+}
