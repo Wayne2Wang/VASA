@@ -1,22 +1,178 @@
-.vasa-report{--ink:#20302d;--muted:#66756f;--line:#dce4df;--green:#247359;color:var(--ink);background:#f4f6f2;font:15px/1.5 system-ui,sans-serif;padding:24px;border-radius:16px;max-width:1240px;margin:auto;color-scheme:light}
-.vasa-report *{box-sizing:border-box}.vasa-report h1{font-size:clamp(20px,3vw,30px);line-height:1.25;margin:8px 0;overflow-wrap:anywhere}.vasa-report h2{font-size:18px;margin:0}.vasa-report h3{font-size:17px;margin:0}.vasa-report .brand{color:var(--green);letter-spacing:.12em;font-size:12px;font-weight:700}.vasa-report .meta,.vasa-report .muted{color:var(--muted);font-size:13px}.vasa-report .workspace{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;margin-top:18px}.vasa-report .canvas{min-width:0}.vasa-report figure{margin:0;min-width:0}.vasa-report .stage img{width:100%;height:480px;max-height:60vh;object-fit:contain;background:#e9eee8;border-radius:12px;display:block}.vasa-report figcaption{font-size:13px;color:var(--muted);margin:6px 0}.vasa-report button{font:inherit;font-size:13px;border:1px solid var(--line);border-radius:7px;padding:8px 12px;background:white;color:var(--ink);cursor:pointer}.vasa-report button:hover,.vasa-report button[aria-pressed=true]{border-color:var(--green);background:#eaf4ed}.vasa-report button:disabled{opacity:.45;cursor:default}.vasa-report button:focus-visible,.vasa-report summary:focus-visible{outline:3px solid var(--green);outline-offset:2px}.vasa-report .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0}.vasa-report .activity{min-width:0;display:flex;flex-direction:column;max-height:620px}.vasa-report .step-list{overflow:auto;max-height:220px;min-height:80px;display:flex;flex-direction:column;gap:6px;margin:10px 0;overscroll-behavior:contain}.vasa-report .step-list button{text-align:left;flex-shrink:0}.vasa-report article{overflow:auto;max-height:310px;background:white;border:1px solid var(--line);border-radius:10px;padding:16px;overscroll-behavior:contain}.vasa-report article header{display:flex;gap:10px;align-items:center}.vasa-report .number{color:var(--green);font-size:12px}.vasa-report details{border-top:1px solid var(--line);padding-top:10px;margin-top:12px}.vasa-report summary{cursor:pointer;font-size:13px;color:var(--muted)}.vasa-report pre{font:12px/1.6 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere;max-height:190px;overflow:auto}.vasa-report .gallery{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.vasa-report .gallery figure{width:80px;cursor:pointer}.vasa-report .gallery img{width:80px;height:65px;object-fit:contain;border-radius:5px}.vasa-report .gallery figcaption{font-size:11px}.vasa-report .warning{background:#fff5df;padding:10px;overflow-wrap:anywhere}.vasa-report [hidden]{display:none!important}.vasa-report footer{font-size:12px;color:var(--muted);margin-top:16px}.vasa-report .detail{overflow-wrap:anywhere}
-@media(max-width:760px){.vasa-report{padding:14px}.vasa-report .workspace{grid-template-columns:1fr}.vasa-report .stage img{height:330px}.vasa-report .activity{max-height:480px}.vasa-report .step-list{max-height:140px}}
+/* Four roles, each with its own hue and lightness: the agent (amber) owns every
+   decision; strategy (violet) and the working mask (green) are its persistent
+   state; SAM3 (blue) is the one tool it calls. */
+.vasa-report{--ink:#f2efe6;--muted:#8a8a8a;--line:#242424;--dim:#1d1d1d;--panel:#0b0b0b;
+  --agent:#e8b34c;--sam3:#5b9bd9;--mask:#43b78d;--strategy:#a78bd0;--warn:#d98a5a;
+  color:var(--ink);background:#000;font-family:Calibri,Carlito,'Segoe UI',system-ui,sans-serif;
+  font-size:16px;padding:22px 28px 18px;display:flex;flex-direction:column;gap:12px;
+  box-sizing:border-box;color-scheme:dark;overflow:hidden;
+  /* Never taller or wider than it needs to be, centred in whatever is left
+     over. The page itself never scrolls; only the conversation and the
+     strategy text scroll inside their panels. */
+  height:min(900px,100dvh);width:100%;max-width:1600px;margin:auto}
+@supports not (height:100dvh){.vasa-report{height:min(900px,100vh)}}
+/* Embedded in a page that scrolls (Gradio), the viewer sits below other
+   controls, so a full-viewport height would push its footer off the bottom.
+   Leave room for the surrounding chrome instead. */
+.vasa-report[data-embed=true]{height:min(760px,calc(100dvh - 120px));min-height:520px;margin:0}
+@supports not (height:100dvh){.vasa-report[data-embed=true]{height:min(760px,calc(100vh - 120px))}}
+.vasa-report *{box-sizing:border-box}
+.vasa-report .title{color:#fff;font-size:15.5px}
+.vasa-report .title b{font-weight:700}
+.vasa-report .asset-bank{display:none}
+.vasa-report [hidden]{display:none!important}
 
-.vasa-report :is(h1,h2,h3,p,span,figcaption,summary,pre,button){color:inherit}.vasa-report p{margin:10px 0}.vasa-report .meta,.vasa-report figcaption,.vasa-report .selection-label{color:var(--muted)}.vasa-report .brand,.vasa-report .number{color:var(--green)}.vasa-report .final-detail{font-size:14px}.vasa-report .stage figure{margin:0}.vasa-report .gallery img{display:block}
-.vasa-report .view-status{display:flex;flex-direction:column;gap:5px;margin-bottom:10px;min-height:56px}.vasa-report .view-badge{align-self:flex-start;padding:4px 10px;border-radius:6px;background:#e5eee8;color:#245b42;font-size:14px}.vasa-report .view-status[data-kind=candidates] .view-badge{background:#e5edff;color:#254f99}.vasa-report .view-status[data-kind=inspection] .view-badge{background:#f4e9ff;color:#70438c}.vasa-report .view-status[data-kind=original] .view-badge{background:#e9e9e9;color:#505050}.vasa-report .view-description{font-size:13px;color:var(--muted)}.vasa-report .playback{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:14px}.vasa-report .playback input{flex:1;min-width:120px;accent-color:var(--green);cursor:pointer}.vasa-report .playback-hint{font-size:12px;color:var(--muted)}
+.vasa-report .grid{display:grid;grid-template-columns:1.4fr 116px 1fr;
+  grid-template-rows:0.62fr 1fr 1fr;row-gap:14px;align-items:stretch;flex-grow:1;min-height:0}
 
-/* Reserve the same space for every step, including text-only actions. */
-.vasa-report .stage{position:relative;height:calc(min(480px,60vh) + 34px);overflow:hidden;background:#e9eee8;border-radius:12px}
-.vasa-report .stage>figure{position:absolute;inset:0;background:#f4f6f2}
-.vasa-report .stage img{height:min(480px,60vh);max-height:none}
-.vasa-report .stage figcaption{height:28px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-.vasa-report .view-status{height:82px;min-height:82px;overflow:hidden}
-.vasa-report .activity{height:660px;max-height:none}
-.vasa-report .activity>h2,.vasa-report .activity>.controls{flex-shrink:0}
-.vasa-report .step-list{height:220px;min-height:220px;flex-shrink:0}
-.vasa-report article,.vasa-report .final-detail{height:310px;max-height:310px;min-height:0;flex:1;overflow:auto}
-.vasa-report .final-detail{background:white;border:1px solid var(--line);border-radius:10px;padding:16px}
-.vasa-report .canvas>.controls{min-height:88px;align-content:flex-start}
-.vasa-report button{transition:background-color 160ms,border-color 160ms}
-@media(max-width:760px){.vasa-report .stage{height:364px}.vasa-report .stage img{height:330px}.vasa-report .activity{height:480px}.vasa-report .step-list{height:140px;min-height:140px}}
-@media(prefers-reduced-motion:reduce){.vasa-report button{transition:none}}
+.vasa-report .agent{grid-column:1;grid-row:1/span 3;border-radius:16px;background:#0d0d0d;
+  border:2px solid var(--agent);display:flex;flex-direction:column;padding:20px;min-width:0;
+  min-height:0;transition:box-shadow .3s;box-shadow:0 0 0 1px #e8b34c33,0 0 22px -10px #e8b34c88}
+.vasa-report[data-agent=on] .agent{box-shadow:0 0 0 3px #e8b34c66,0 0 48px -4px #e8b34ccc}
+.vasa-report .agent-head{display:flex;align-items:center;gap:9px;margin-bottom:14px;flex-shrink:0}
+.vasa-report .agent-head h2{font-size:15px;color:var(--agent);margin:0;font-weight:700;
+  font-family:ui-monospace,monospace}
+.vasa-report .live-dot{width:10px;height:10px;border-radius:50%;background:var(--agent);
+  box-shadow:0 0 10px 2px #e8b34c99;flex-shrink:0;animation:vasaPulse 1.8s ease-in-out infinite}
+.vasa-report .badge{margin-left:auto;font-size:12.5px;color:var(--muted);border:1px solid var(--line);
+  border-radius:999px;padding:3px 10px;white-space:nowrap}
+
+.vasa-report .chat{background:#070707;border:1px solid var(--line);border-radius:12px;padding:18px;
+  flex-grow:1;min-height:0;overflow-y:auto;scroll-behavior:smooth;display:flex;flex-direction:column;gap:14px}
+.vasa-report .asked{align-self:flex-end;max-width:82%;flex-shrink:0}
+.vasa-report .asked-bubble{display:flex;gap:12px;align-items:center;background:#eee6d8;color:#141414;
+  border-radius:16px 16px 4px 16px;padding:12px}
+.vasa-report .asked-bubble img{width:72px;height:72px;border-radius:10px;object-fit:contain;
+  background:#000;flex-shrink:0}
+.vasa-report .asked-bubble p{margin:0;font-size:15px;line-height:1.45;font-style:italic}
+.vasa-report .box{align-self:flex-start;width:94%;display:flex;flex-direction:column;gap:6px;
+  flex-shrink:0;opacity:1;transition:opacity .3s}
+.vasa-report .box.faded{opacity:.45}
+.vasa-report .box-head{display:block;width:100%;text-align:left;cursor:pointer;background:#151515;
+  border:1px solid var(--line);border-left:4px solid var(--agent);border-radius:4px 16px 16px 16px;
+  padding:13px 17px 14px;font:inherit;color:inherit}
+.vasa-report .box.warn .box-head{border-left-color:var(--warn)}
+.vasa-report .box.unparsed .box-head{border-left-color:var(--muted)}
+.vasa-report .box-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.vasa-report .box-kind{font-size:12.5px;color:var(--agent);font-weight:700}
+.vasa-report .box.warn .box-kind{color:var(--warn)}
+.vasa-report .box.unparsed .box-kind{color:var(--muted)}
+.vasa-report .box-pill{flex-shrink:0;font-size:12px;font-weight:700;color:#8b8b8b;
+  border:1px solid #2d2d2d;border-radius:999px;padding:3px 10px;white-space:nowrap}
+.vasa-report .box-decision{display:block;font-size:18.5px;font-weight:700;color:#f8f5ec;
+  line-height:1.35;margin-bottom:6px}
+.vasa-report .box-why{display:block;line-height:1.5;color:#8f8f8f;font-size:13.5px}
+.vasa-report .box-full{background:#000;border:1px solid var(--line);border-radius:10px;
+  padding:13px 15px;max-height:280px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;
+  font:12.5px/1.65 ui-monospace,monospace;color:#949494;margin:0}
+.vasa-report .typing{align-self:flex-start;background:#151515;border:1px solid var(--line);
+  border-radius:4px 16px 16px 16px;padding:11px 15px;display:flex;gap:5px;flex-shrink:0;
+  animation:vasaDotsIn .28s ease-out .6s both}
+.vasa-report .typing i{width:6px;height:6px;border-radius:50%;background:var(--agent);
+  animation:vasaDot 1.2s infinite ease-in-out}
+.vasa-report .typing i:nth-child(2){animation-delay:.15s}
+.vasa-report .typing i:nth-child(3){animation-delay:.3s}
+
+.vasa-report .wire{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:9px;min-width:0;padding:0 8px}
+.vasa-report .wire .line{position:relative;width:100%;height:3px;background:var(--dim);border-radius:3px}
+.vasa-report .wire[data-flow=r] .line,.vasa-report .wire[data-flow=l] .line{background:#3d3d3d}
+.vasa-report .wire .line::after{content:'';position:absolute;top:-4.5px;width:11px;height:11px;
+  border-radius:50%;opacity:0}
+.vasa-report .wire[data-flow=r] .line::after{background:var(--agent);box-shadow:0 0 10px 2px #e8b34caa;
+  animation:vasaFlowR 1.15s ease-in-out infinite}
+.vasa-report .wire[data-wire="1"][data-flow=l] .line::after{background:var(--sam3);
+  box-shadow:0 0 10px 2px #5b9bd9aa;animation:vasaFlowL 1.15s ease-in-out infinite}
+.vasa-report .wire[data-wire="2"][data-flow=l] .line::after{background:var(--mask);
+  box-shadow:0 0 10px 2px #43b78daa;animation:vasaFlowL 1.15s ease-in-out infinite}
+.vasa-report .wire span{font-size:12.5px;font-weight:700;text-align:center;width:100%;
+  opacity:.28;transition:opacity .3s;display:block}
+.vasa-report .wire .out{color:var(--agent)}
+.vasa-report .wire[data-wire="1"] .back{color:var(--sam3)}
+.vasa-report .wire[data-wire="2"] .back{color:var(--mask)}
+.vasa-report .wire[data-flow=r] .out,.vasa-report .wire[data-flow=l] .back{opacity:1}
+
+.vasa-report .panel{border-radius:14px;background:var(--panel);border:1px solid var(--dim);
+  display:flex;flex-direction:column;padding:16px;min-width:0;min-height:0;
+  transition:border-color .3s,box-shadow .3s}
+.vasa-report .panel h2{font-size:14.5px;margin:0;font-weight:700}
+.vasa-report .panel .head{display:flex;align-items:center;gap:8px;margin-bottom:9px;flex-shrink:0}
+.vasa-report .panel .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.vasa-report .panel .well{flex-grow:1;min-height:0;border-radius:10px;overflow:hidden;background:#000;
+  display:flex;align-items:center;justify-content:center}
+.vasa-report .panel .well img{width:100%;height:100%;object-fit:contain}
+.vasa-report .panel .cap{margin:8px 0 0;font-size:13px;color:var(--muted);overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap;flex-shrink:0}
+.vasa-report .strategy{grid-column:3;grid-row:1}
+.vasa-report .strategy h2,.vasa-report .strategy .dot{color:var(--strategy);background-color:var(--strategy)}
+.vasa-report .strategy h2{background:none}
+.vasa-report[data-strategy=set] .strategy{border-color:var(--strategy);
+  box-shadow:0 0 0 2px var(--strategy),0 0 34px -6px var(--strategy)}
+.vasa-report[data-strategy=guiding] .strategy{border-color:var(--strategy);
+  box-shadow:0 0 0 1px #a78bd066,0 0 26px -8px #a78bd0cc}
+/* Fades the last few pixels so clipped text reads as "there is more". */
+.vasa-report .strategy .well{display:block;overflow-y:auto;background:#000;border:1px solid var(--dim);
+  padding:12px 13px;-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 20px),transparent);
+  mask-image:linear-gradient(to bottom,#000 calc(100% - 20px),transparent)}
+.vasa-report .strategy-head{font-size:15px;font-weight:700;color:#f2ecf8;line-height:1.35;margin-bottom:6px}
+.vasa-report .strategy-body{font-size:12.5px;line-height:1.55;color:#8f8f8f}
+.vasa-report .muted{color:#5a5a5a;font-size:13.5px}
+.vasa-report .sam3{grid-column:3;grid-row:2}
+.vasa-report .sam3 h2{color:var(--sam3)}.vasa-report .sam3 .dot{background:var(--sam3)}
+.vasa-report .sam3 .well{border:1px dashed var(--line)}
+.vasa-report[data-sam3=on] .sam3{border-color:var(--sam3);box-shadow:0 0 0 2px var(--sam3),0 0 34px -6px var(--sam3)}
+.vasa-report .mask{grid-column:3;grid-row:3}
+.vasa-report .mask h2{color:var(--mask)}.vasa-report .mask .dot{background:var(--mask)}
+.vasa-report[data-mask=on] .mask{border-color:var(--mask);box-shadow:0 0 0 2px var(--mask),0 0 34px -6px var(--mask)}
+.vasa-report .wire[data-wire="0"]{grid-column:2;grid-row:1}
+.vasa-report .wire[data-wire="1"]{grid-column:2;grid-row:2}
+.vasa-report .wire[data-wire="2"]{grid-column:2;grid-row:3}
+
+.vasa-report footer{border-top:1px solid #1a1a1a;padding-top:13px;display:flex;align-items:center;
+  gap:14px;flex-shrink:0}
+.vasa-report footer button[data-action=play]{width:34px;height:34px;border-radius:50%;
+  border:1px solid var(--line);background:#151515;color:#eee9dd;cursor:pointer;flex-shrink:0;font-size:14px}
+.vasa-report .status{font-size:13.5px;color:#c9c9c9;min-width:230px;font-weight:700}
+.vasa-report .ticks{display:flex;gap:6px;flex-grow:1;min-width:0}
+.vasa-report .tick{flex:1;min-width:0;height:30px;border-radius:7px;border:1px solid var(--dim);
+  background:#0c0c0c;cursor:pointer;padding:0 6px;font:inherit;font-size:11.5px;color:#767676;
+  font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  transition:background .2s,border-color .2s}
+.vasa-report .tick[aria-pressed=true]{border-color:var(--agent);background:#e8b34c22;color:var(--ink)}
+.vasa-report button:focus-visible{outline:2px solid var(--agent);outline-offset:2px}
+
+@keyframes vasaDot{0%,80%,100%{opacity:.25;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+@keyframes vasaDotsIn{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes vasaPulse{0%,100%{opacity:.5;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
+@keyframes vasaFlowR{0%{left:-7px;opacity:0}15%{opacity:1}85%{opacity:1}100%{left:calc(100% - 7px);opacity:0}}
+@keyframes vasaFlowL{0%{left:calc(100% - 7px);opacity:0}15%{opacity:1}85%{opacity:1}100%{left:-7px;opacity:0}}
+@media (prefers-reduced-motion:reduce){
+  .vasa-report .live-dot,.vasa-report .typing,.vasa-report .typing i{animation:none}
+  .vasa-report .wire .line::after{animation:none!important;opacity:.9;left:calc(50% - 5px)}
+}
+/* Short windows: give the panels the room instead of the chrome. */
+@media (max-height:820px){
+  .vasa-report{padding:16px 22px 14px;gap:10px;font-size:15px}
+  .vasa-report .agent{padding:14px}
+  .vasa-report .chat{padding:14px;gap:10px}
+  .vasa-report .panel{padding:12px}
+  .vasa-report .box-head{padding:10px 14px 11px}
+  .vasa-report .box-decision{font-size:17px;margin-bottom:4px}
+  .vasa-report .asked-bubble img{width:56px;height:56px}
+  .vasa-report .asked-bubble p{font-size:14px}
+  .vasa-report .grid{row-gap:10px}
+}
+@media (max-height:680px){
+  .vasa-report{padding:12px 18px 10px;gap:8px}
+  .vasa-report .box-why,.vasa-report .strategy-body{display:none}
+  .vasa-report .box-decision{font-size:16px}
+  .vasa-report .asked-bubble img{width:44px;height:44px}
+  .vasa-report .agent-head{margin-bottom:8px}
+  .vasa-report .title{font-size:14px}
+}
+@media (max-width:1100px){
+  .vasa-report .grid{grid-template-columns:1fr;grid-template-rows:auto}
+  .vasa-report .agent,.vasa-report .strategy,.vasa-report .sam3,.vasa-report .mask{grid-column:1;grid-row:auto}
+  .vasa-report .wire{display:none}
+  .vasa-report .panel .well{min-height:220px}
+}

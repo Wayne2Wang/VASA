@@ -66,9 +66,10 @@ def segment(image, query, output=None, *, model=None, base_url=None, api_key=Non
             if progress_callback:
                 progress_callback(" ".join(str(arg) for arg in args))
         def preview(history):
+            # Hand back the snapshot itself; how it gets displayed is not
+            # inference's business.
             if preview_callback:
-                from .trace_html import render_markup
-                preview_callback(render_markup(work, {'query': query, 'model': model}, _portable_trace(history, work), live=True))
+                preview_callback(_portable_trace(history, work))
         _, history, result, _ = agent_inference(
             str(normalized_path), query, client, sam, max_generations=max_rounds,
             max_tokens=max_tokens, output_dir=str(work/'trace'),
@@ -99,6 +100,7 @@ def segment(image, query, output=None, *, model=None, base_url=None, api_key=Non
                              'path_base': 'output_directory', 'format_version': 1}
     (folder/'result.json').write_text(json.dumps(metadata, indent=2))
     if save_trace:
-        from .trace_html import render_trace
+        from .trace_html import render_trace, render_plain
         render_trace(folder)
+        render_plain(folder)          # the raw transcript, for reading the run yourself
     return {**metadata, 'output_dir': str(folder)}

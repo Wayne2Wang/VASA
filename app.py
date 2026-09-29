@@ -10,7 +10,7 @@ from src.runs import automatic_output
 os.environ.setdefault('GRADIO_ANALYTICS_ENABLED', 'False')
 import gradio as gr
 from dotenv import load_dotenv
-from src.trace_html import inline_trace, inline_css, viewer_js, render_trace
+from src.trace_html import shell_html, feed_html, live_payload, inline_css, viewer_js, render_trace, render_plain
 
 ROOT = Path(__file__).resolve().parent
 OUTPUTS = ROOT/'outputs'
@@ -48,7 +48,9 @@ def show_run(name, explanations):
         return '', None, None, None
     folder = run_folder(name)
     render_trace(folder)
-    return inline_trace(folder, explanations), str(folder/'mask.png'), str(folder/'overlay.png'), str(folder/'trace.html')
+    render_plain(folder)
+    return (feed_html(live_payload(folder)), str(folder/'mask.png'),
+            str(folder/'overlay.png'), str(folder/'trace.html'))
 
 
 def run(image, query, device, explanations, progress=gr.Progress(), preview_callback=None):
@@ -63,8 +65,17 @@ def run(image, query, device, explanations, progress=gr.Progress(), preview_call
     def status(text):
         if 'Round ' in text:
             progress(None, desc=text.strip().strip('-').strip())
+    sent = set()
+    def push(snapshot):
+        payload = live_payload(folder, {'query': query, 'model': os.getenv('VASA_MODEL', '')}, snapshot)
+        # The viewer keeps the images it has already been given, so only ship
+        # the ones it has not seen; otherwise every round resends the lot.
+        payload['assets'] = {k: v for k, v in payload['assets'].items() if k not in sent}
+        sent.update(payload['assets'])
+        preview_callback(feed_html(payload))
     try:
-        result = segment(image, query, folder, device=device, progress_callback=status, preview_callback=preview_callback)
+        result = segment(image, query, folder, device=device, progress_callback=status,
+                         preview_callback=push if preview_callback else None)
     except Exception as exc:
         # Do not expose provider exception bodies or credentials in the browser.
         raise gr.Error(f'Run failed ({type(exc).__name__}). See the local terminal for details.') from exc
@@ -78,28 +89,23 @@ def stream_run(image, query, device, explanations):
         try:
             result = run(image, query, device, explanations,
                          progress=lambda *a, **kw: events.put(('status', kw.get('desc', 'Running…'))),
-                         preview_callback=lambda markup: events.put(('preview', markup)))
+                         preview_callback=lambda payload: events.put(('preview', payload)))
             events.put(('done', result))
         except Exception as exc:
             events.put(('error', exc))
     worker = Thread(target=work, daemon=True)
     worker.start()
-    last = ''
     try:
-        yield '<div role="status" style="min-height:240px;padding:24px">Preparing your image… The run will appear here.</div>', None, None, None, '', gr.update(interactive=False), 'Preparing…'
+        yield '', None, None, None, '', gr.update(interactive=False), 'Preparing your image…'
         while True:
             kind, value = events.get()
             if kind == 'done':
                 yield value
                 return
             if kind == 'error':
-                if last:
-                    yield last.replace('data-live="true"', 'data-live="false" data-failed="true"').replace(' · Running', ' · Failed'), gr.skip(), gr.skip(), gr.skip(), gr.skip(), gr.update(interactive=True), 'Run failed. See the terminal for details.'
-                else:
-                    yield gr.skip(), gr.skip(), gr.skip(), gr.skip(), gr.skip(), gr.update(interactive=True), 'Run failed. See the terminal for details.'
+                yield gr.skip(), gr.skip(), gr.skip(), gr.skip(), gr.skip(), gr.update(interactive=True), 'Run failed. See the terminal for details.'
                 raise value
             if kind == 'preview':
-                last = value
                 yield value, gr.skip(), gr.skip(), gr.skip(), gr.skip(), gr.skip(), 'Running · following completed actions'
             else:
                 yield gr.skip(), gr.skip(), gr.skip(), gr.skip(), gr.skip(), gr.skip(), value
@@ -127,25 +133,36 @@ def build_app():
             refresh = gr.Button('Refresh runs')
             explanations = gr.State(False)
         selected = gr.State('')
-        viewer = gr.HTML(elem_id='vasa-playground', min_height=240, apply_default_css=False, js_on_load=viewer_js() + '\nmountVasa(element);', autoscroll=False)
+        # Mounted once with an empty shell. Rounds arrive as data through
+        # `feed` below, so the DOM is never replaced and playback, scroll
+        # position and in-flight animation all survive each update.
+        viewer = gr.HTML(shell_html(), elem_id='vasa-playground', min_height=240,
+                         apply_default_css=False,
+                         js_on_load=viewer_js() + '\nmountVasa(element);', autoscroll=False)
+        # Rounds land here as an inert data attribute. Swapping this element's
+        # markup leaves the mounted viewer alone, and nothing is written back
+        # into the component that sent it.
+        feed = gr.HTML('', elem_id='vasa-feed')
         with gr.Row():
             mask = gr.File(label='Download mask', interactive=False)
             overlay = gr.File(label='Download overlay', interactive=False)
             report = gr.File(label='Download HTML report', interactive=False)
-        start.click(lambda: gr.update(open=False), outputs=composer, queue=False).then(
-            fn=None, js="""() => { requestAnimationFrame(() => {
-                const playground = document.getElementById('vasa-playground');
-                if (playground) {
-                    playground.setAttribute('tabindex', '-1');
-                    playground.focus({preventScroll: true});
-                    playground.scrollIntoView({behavior: 'smooth', block: 'start'});
-                }
-            }); }""")
-        runs.input(lambda: gr.update(open=False), outputs=composer, queue=False)
-        start.click(stream_run, [image,query,device,explanations], [viewer,mask,overlay,report,selected,runs,status], concurrency_limit=1, concurrency_id='vasa-model', trigger_mode='once')
+        # Collapsing the composer moves the viewer up the page, so wait a frame
+        # for that to settle before scrolling to it.
+        reveal = """() => { requestAnimationFrame(() => requestAnimationFrame(() => {
+            const playground = document.getElementById('vasa-playground');
+            if (playground) {
+                playground.setAttribute('tabindex', '-1');
+                playground.focus({preventScroll: true});
+                playground.scrollIntoView({behavior: 'smooth', block: 'start'});
+            }
+        })); }"""
+        start.click(lambda: gr.update(open=False), outputs=composer, queue=False).then(fn=None, js=reveal)
+        runs.input(lambda: gr.update(open=False), outputs=composer, queue=False).then(fn=None, js=reveal)
+        start.click(stream_run, [image,query,device,explanations], [feed,mask,overlay,report,selected,runs,status], concurrency_limit=1, concurrency_id='vasa-model', trigger_mode='once')
         def review(name, expanded):
             return (*show_run(name, expanded), name)
-        runs.input(review, [runs, explanations], [viewer,mask,overlay,report,selected])
+        runs.input(review, [runs, explanations], [feed,mask,overlay,report,selected])
         refresh.click(lambda:gr.update(choices=saved_runs()), outputs=runs)
     return app
 
