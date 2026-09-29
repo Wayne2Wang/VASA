@@ -10,7 +10,7 @@
 
 <p align="left"><img src="assets/teaser.png" width="92%" alt="VASA maintains and edits a working mask to construct the requested region, compared with SAM3 Agent's repeated segmentation attempts." /></p>
 
-## Setup
+## Setup (you can run this on your mac!)
 
 VASA has two parts:
 
