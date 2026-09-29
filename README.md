@@ -187,7 +187,7 @@ The page follows the run live as each round lands, and saves every result under 
 ## Citation
 
 ```bibtex
-@misc{wang2026visionharnessingagentopen,
+@misc{wang2026vasa
   title={Vision Harnessing Agent for Open Ad-hoc Segmentation},
   author={Zilin Wang and Stella X. Yu},
   year={2026},
