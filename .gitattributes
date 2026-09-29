@@ -1,0 +1,6 @@
+# The example runs ship the pages that `python -m src.trace_html` writes.
+# They are build output, not hand-written source: marking them generated keeps
+# them out of the repository's language statistics and collapses them in diffs,
+# where 800 KB of base64-embedded images is nothing anyone wants to scroll.
+outputs/**/trace.html        linguist-generated=true
+outputs/**/trace_plain.html  linguist-generated=true
