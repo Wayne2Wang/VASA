@@ -133,7 +133,7 @@ Try these three queries on `examples/pipi.png`. The original image and example o
 
 ```bash
 python demo.py --image examples/pipi.png \
-  --query "segment the cat's head without what she uses to hear and see" \
+  --query "Segment the cat's head without what she uses to hear and see" \
   --output outputs/head
 
 python demo.py --image examples/pipi.png \
