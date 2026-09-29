@@ -134,16 +134,18 @@ Try these three queries on `examples/pipi.png`. The original image and example o
 ```bash
 python demo.py --image examples/pipi.png \
   --query "Segment the cat's head without what she uses to hear and see" \
-  --output outputs/head
+  --output outputs/pipi-head
 
 python demo.py --image examples/pipi.png \
   --query "What parts are about to make contact" \
-  --output outputs/contact
+  --output outputs/pipi-contact
 
 python demo.py --image examples/pipi.png \
   --query "Segment everything with a striped pattern" \
-  --output outputs/stripes
+  --output outputs/pipi-strip
 ```
+
+These three runs are also included under [`outputs/`](outputs) — open a `trace.html` to read a full session before running anything yourself.
 
 **2. Or provide your own image and query**
 
@@ -157,8 +159,9 @@ The examples use CUDA by default. Use `--device cpu` on Mac or a CPU-only machin
 
 Omit `--output` to automatically save each run in `outputs/` with a shortened image name, query, timestamp, and unique ID. Repeating an image and query creates a new run. An explicit `--output` directory must be empty.
 
-Each run saves `mask.png`, `overlay.png`, and a `result.json` summary. Traces are saved by default: `input.png` preserves the input image, `trace/sam_out/` contains intermediate masks and candidate records, and `trace/history.json` records the agent's conversation, tool calls, and image references relative to the output folder. Open `trace.html` for an offline walkthrough with tool calls, intermediate images, and expandable model explanations. The HTML embeds its images, so it can be shared as one file. Use `--no-trace` to skip trace saving.
+Each run saves `mask.png`, `overlay.png`, and a `result.json` summary. Traces are saved by default: `input.png` preserves the input image, `trace/sam_out/` contains intermediate masks and candidate records, and `trace/history.json` records the agent's conversation, tool calls, and image references relative to the output folder.
 
+Two self-contained pages open straight from disk: **`trace.html`** replays the run step by step, and **`trace_plain.html`** dumps every message for debugging (it includes the system prompt, so keep it local). Rebuild either with `python -m src.trace_html outputs/my-image [--plain]`. Use `--no-trace` to skip trace saving.
 
 ## Gradio
 
@@ -171,15 +174,15 @@ Open the printed local URL, upload an image, pick or type a query, and click **R
 <table>
   <tr>
     <th>Image and query</th>
-    <th>Step-by-step review</th>
+    <th>Step-by-step review (same as trace.html)</th>
   </tr>
   <tr>
     <td width="50%" align="center"><img src="assets/gradio-query.png" alt="Gradio input panel with the example cat image, query box, and preset queries" /></td>
-    <td width="50%" align="center"><img src="assets/gradio-interactive.png" alt="Interactive walkthrough with mask view, activity timeline, and step navigation" /></td>
+    <td width="50%" align="center"><img src="assets/gradio-interactive.png" alt="Agent messages on the left, with the strategy, SAM3 candidate, and working mask panels lighting up on the right" /></td>
   </tr>
 </table>
 
-The page follows the run live, lets you step through tool calls and optional explanations, and saves each result under `outputs/`. Reopen past runs from the dropdown or download the mask, overlay, or offline HTML report (same viewer as `trace.html`).
+The page follows the run live as each round lands, and saves every result under `outputs/`. Reopen past runs from the dropdown to step through them, or download the mask, overlay, or the offline report — the same viewer as `trace.html`.
 
 ## Citation
 
