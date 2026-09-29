@@ -8,7 +8,11 @@ __pycache__/
 build/
 dist/
 .venv/
-outputs/
+# Runs stay local, except the three example runs shipped with the README.
+outputs/*
+!outputs/pipi-head/
+!outputs/pipi-contact/
+!outputs/pipi-strip/
 checkpoints/
 third_party/
 *.pt
