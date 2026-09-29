@@ -16,7 +16,12 @@ from PIL import Image
 
 from ..vlm import EmptyVLMResponse
 from .viz import visualize
-from ..utils.overlay_style import overlay_mask_bgr
+from ..utils.overlay_style import (
+    DEFAULT_MASK_OVERLAY_ALPHA,
+    DEFAULT_MASK_OVERLAY_BGR,
+    DEFAULT_MASK_OVERLAY_IMAGE_DIM,
+    overlay_mask_bgr,
+)
 
 
 def _coerce_mask_index_list(value):
@@ -209,9 +214,9 @@ def save_working_mask_overlay(
     working_mask_rle,
     output_path,
     *,
-    color_bgr: tuple[int, int, int] = (0, 0, 255),
-    overlay_alpha: float = 0.58,
-    image_dim: float = 0.48,
+    color_bgr: tuple[int, int, int] = DEFAULT_MASK_OVERLAY_BGR,
+    overlay_alpha: float = DEFAULT_MASK_OVERLAY_ALPHA,
+    image_dim: float = DEFAULT_MASK_OVERLAY_IMAGE_DIM,
 ):
     """Save working-mask frame (same BGR overlay style as demo_single / visualize_three_experiment_predictions)."""
     image_bgr = cv2.imread(image_path, cv2.IMREAD_COLOR)
@@ -429,9 +434,9 @@ def agent_inference(
     output_dir="../../sam3_agent_out",
     print_func=print,
     *,
-    working_mask_overlay_bgr: tuple[int, int, int] = (0, 0, 255),
-    working_mask_overlay_alpha: float = 0.58,
-    working_mask_overlay_image_dim: float = 0.48,
+    working_mask_overlay_bgr: tuple[int, int, int] = DEFAULT_MASK_OVERLAY_BGR,
+    working_mask_overlay_alpha: float = DEFAULT_MASK_OVERLAY_ALPHA,
+    working_mask_overlay_image_dim: float = DEFAULT_MASK_OVERLAY_IMAGE_DIM,
     system_prompt_path: str | None = None,
     iterative_checking_system_prompt_path: str | None = None,
     enable_error_recovery: bool = True,

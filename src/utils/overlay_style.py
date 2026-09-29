@@ -3,6 +3,11 @@ from __future__ import annotations
 
 import numpy as np
 
+# OpenCV BGR: green highlight on dimmed base (final overlay.png and working-mask frames).
+DEFAULT_MASK_OVERLAY_BGR: tuple[int, int, int] = (0, 255, 0)
+DEFAULT_MASK_OVERLAY_ALPHA: float = 0.58
+DEFAULT_MASK_OVERLAY_IMAGE_DIM: float = 0.48
+
 
 def _collapse_mask_to_2d(mask: np.ndarray) -> np.ndarray:
     """Reduce a mask array to H×W.
